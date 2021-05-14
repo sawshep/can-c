@@ -38,14 +38,14 @@ int main(int argc, char *argv[]) {
       exit(EXIT_FAILURE);
     }
 
-    trash_info = init_trash();
-    if (trash_info == NULL) {
+    trash_paths = init_trash();
+    if (trash_paths == NULL) {
       exit(EXIT_FAILURE);
     }
 
     {
         int i;
-	for (i = 0; i < sizeof()/sizeof(arg_info.files[0]), i++) {
+	for (i = 0; i < sizeof(arg_info)/ sizeof(arg_info.files[0]), i++) {
 	    trash(arg_info.files[i], trash_info);
 	}
     }

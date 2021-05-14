@@ -17,7 +17,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <stddef.h>
 #include <libgen.h>
 #include <sys/stat.h>
 #include <unistd.h>

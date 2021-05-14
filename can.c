@@ -30,8 +30,8 @@ int find_id(char *filename, int id) {
 }
 
 int main(int argc, char *argv[]) {
-    struct ArgInfo *arg_info == NULL;
-    struct TrashPaths *trash_paths == NULL;
+    struct ArgInfo *arg_info = NULL;
+    struct TrashPaths *trash_paths = NULL;
 
     arg_info = parse_args(argc, argv);
     if (arg_info == NULL) {

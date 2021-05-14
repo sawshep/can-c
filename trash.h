@@ -15,19 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */ 
 
-#ifndef CAN_ENV_H
-#define CAN_ENV_H
-
-#define XDG_DATA_HOME_DEFAULT "~/.local/share"
-
-#define TRASH_FILES "/Trash/files/"
-#define TRASH_INFO "/Trash/info/"
-
-struct TrashPaths {
-  char *files;
-  char *info;
-}
-
-extern void init_trash(TrashPaths*);
-
+#ifndef TRASH_H
+#define TRASH_H
+extern void trash(char *);
 #endif

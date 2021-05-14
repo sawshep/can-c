@@ -15,19 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */ 
 
-#ifndef CAN_ENV_H
-#define CAN_ENV_H
+#ifndef CAN_ARG_H
+enum Mode { TRASH_MODE, INFO_MODE, UNTRASH_MODE };
 
-#define XDG_DATA_HOME_DEFAULT "~/.local/share"
+enum Mode DEFAULT_MODE = TRASH_MODE;
 
-#define TRASH_FILES "/Trash/files/"
-#define TRASH_INFO "/Trash/info/"
+struct ArgInfo {
+    enum Mode mode;
+    char *files[];
+    /*bool verbose;*/
+};
 
-struct TrashPaths {
-  char *files;
-  char *info;
-}
-
-extern void init_trash(TrashPaths*);
-
+struct ArgInfo *parse_args(int argc, char *argv[]);
+#define CAN_ARG_H
 #endif

@@ -1,3 +1,20 @@
+/* can: move files to the trashcan.
+ * Copyright (C) 2021  Sawyer Shepherd
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */ 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
@@ -7,7 +24,8 @@
 
 int mkpath(char* file_path, mode_t mode) {
     char *p = NULL;
-    /* Why is the assert needed? */
+    /* This assert is needed to insure that both the pointer and the string
+    pointed to are not NULL */
     assert(file_path && *file_path);
     for (p = strchr(file_path + 1, '/'); p; p = strchr(p + 1, '/')) {
         *p = '\0';
@@ -22,12 +40,13 @@ int mkpath(char* file_path, mode_t mode) {
     return 0;
 }
 
-void init_trash(void) {
+struct TrashPaths *init_trash(void) {
     char *xdg_data_home = NULL;
     char *trash_files = NULL;
     char *trash_info = NULL;
+    struct TrashPaths paths;
 
-    xdg_data_home = getenv("XDG_DATA_HOME");
+    xdg_data_home = secure_getenv("XDG_DATA_HOME");
     if (xdg_data_home == NULL) {
         xdg_data_home = XDG_DATA_HOME_DEFAULT;
     }
@@ -64,9 +83,12 @@ void init_trash(void) {
      */
     if (mkdir(trash_files, 0600) || mkdir(trash_info, 0600)) {
         fprintf(stderr, "Could not create trash folders: %s\n", strerror(errno));
+	free(trash_files);
+	free(trash_info);
         exit(EXIT_FAILURE);
     }
 
-    free(trash_files);
-    free(trash_info);
+    paths.files = trash_files;
+    paths.info = trash_info;
+    return *paths;
 }

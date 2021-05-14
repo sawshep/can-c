@@ -17,6 +17,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stddef.h>
 #include <libgen.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -30,8 +31,8 @@ int find_id(char *filename, int id) {
 }
 
 int main(int argc, char *argv[]) {
-    struct ArgInfo *arg_info;
-    struct TrashPaths *trash_paths;
+    struct ArgInfo *arg_info == NULL;
+    struct TrashPaths *trash_paths == NULL;
 
     arg_info = parse_args(argc, argv);
     if (arg_info == NULL) {

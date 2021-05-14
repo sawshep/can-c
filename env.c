@@ -45,9 +45,9 @@ struct TrashPaths *init_trash(void) {
     char *xdg_data_home = NULL;
     char *trash_files = NULL;
     char *trash_info = NULL;
-    struct TrashPaths *paths = NULL;
+    struct TrashPaths *trash_paths = NULL;
 
-    xdg_data_home = secure_getenv("XDG_DATA_HOME");
+    xdg_data_home = getenv("XDG_DATA_HOME");
     if (xdg_data_home == NULL) {
         xdg_data_home = XDG_DATA_HOME_DEFAULT;
     }
@@ -89,7 +89,7 @@ struct TrashPaths *init_trash(void) {
         exit(EXIT_FAILURE);
     }
 
-    paths->files = trash_files;
-    paths->info = trash_info;
-    return paths;
+    trash_paths->files = trash_files;
+    trash_paths->info = trash_info;
+    return trash_paths;
 }

@@ -26,8 +26,8 @@
 struct TrashPaths {
   char *files;
   char *info;
-}
+};
 
-extern void init_trash(TrashPaths*);
+struct TrashPaths *init_trash(void);
 
 #endif

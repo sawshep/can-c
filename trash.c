@@ -1,6 +1,5 @@
 /* can: move files to the trashcan.
- * Copyright (C) 2021  Sawyer Shepherd
- * 
+ * Copyright (C) 2021  Sawyer Shepherd 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -15,7 +14,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */ 
 
-#include <env.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
+#include <string.h>
+#include "env.h"
 
 void trash(char *path, struct TrashPaths *trash_paths) {
     char *filename = NULL;
@@ -35,10 +38,10 @@ void trash(char *path, struct TrashPaths *trash_paths) {
      */
     
     filename = basename(path);
-    new_path_len = strlen(g_trash_files) + strlen(filename);
+    new_path_len = strlen(trash_paths->files) + strlen(filename);
     new_path = malloc(new_path_len + 1); /* +1 for null termination */
 
-    strcat(new_path, g_trash_files);
+    strcat(new_path, trash_paths->info);
     strcat(new_path, filename);
 
     printf("%s\n", new_path);

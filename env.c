@@ -19,10 +19,11 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include <assert.h>
 
 #include "env.h"
 
-int mkpath(char* file_path, mode_t mode) {
+int mkpath(char* file_path, __mode_t mode) {
     char *p = NULL;
     /* This assert is needed to insure that both the pointer and the string
     pointed to are not NULL */
@@ -44,7 +45,7 @@ struct TrashPaths *init_trash(void) {
     char *xdg_data_home = NULL;
     char *trash_files = NULL;
     char *trash_info = NULL;
-    struct TrashPaths paths;
+    struct TrashPaths *paths = NULL;
 
     xdg_data_home = secure_getenv("XDG_DATA_HOME");
     if (xdg_data_home == NULL) {
@@ -88,7 +89,7 @@ struct TrashPaths *init_trash(void) {
         exit(EXIT_FAILURE);
     }
 
-    paths.files = trash_files;
-    paths.info = trash_info;
-    return *paths;
+    paths->files = trash_files;
+    paths->info = trash_info;
+    return paths;
 }

@@ -15,28 +15,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <stddef.h>
+
 #include "arg.h"
 
 struct ArgInfo *parse_args(int argc, char *argv[]) {
     int c;
     enum Mode mode;
-    struct ArgInfo arg_info;
+    struct ArgInfo *arg_info = NULL;
 
     while ((c = getopt(argc, argv, "fuv")) != -1) {
       switch (c) {
       case 'f':
-	mode = INFO_MODE;
+	    mode = INFO_MODE;
 	break;
       case 'u':
-	mode = UNTRASH_MODE;
+	    mode = UNTRASH_MODE;
 	break;
       case '?':
 	return NULL;
       default:
-	mode = INFO_MODE;
+	    mode = INFO_MODE;
       }
     }
-      arg_info.mode = mode;
+      arg_info->mode = mode;
     
-    return *arg_info;
+    return arg_info;
 }

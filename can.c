@@ -22,7 +22,7 @@
 #include <unistd.h>
 
 #include "arg.h"
-#incldue "env.h"
+#include "env.h"
 #include "trash.h"
 
 int find_id(char *filename, int id) {
@@ -31,7 +31,7 @@ int find_id(char *filename, int id) {
 
 int main(int argc, char *argv[]) {
     struct ArgInfo *arg_info;
-    struct TrashInfo *trash_info;
+    struct TrashPaths *trash_paths;
 
     arg_info = parse_args(argc, argv);
     if (arg_info == NULL) {
@@ -45,11 +45,11 @@ int main(int argc, char *argv[]) {
 
     {
         int i;
-	for (i = 0; i < sizeof(arg_info)/ sizeof(arg_info.files[0]), i++) {
-	    trash(arg_info.files[i], trash_info);
+	for (i = 0; i < sizeof(arg_info)/ sizeof(arg_info->files[0]); i++) {
+	    trash(arg_info->files[i], trash_paths);
 	}
     }
 
-    free(trash_info);
+    free(trash_paths);
     exit(EXIT_SUCCESS);
 }

@@ -17,5 +17,5 @@
 
 #ifndef TRASH_H
 #define TRASH_H
-extern void trash(char *);
+void trash(char *path, struct TrashPaths *trash_paths);
 #endif

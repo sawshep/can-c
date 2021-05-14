@@ -22,7 +22,7 @@ enum Mode DEFAULT_MODE = TRASH_MODE;
 
 struct ArgInfo {
     enum Mode mode;
-    char *files[];
+    char **files;
     /*bool verbose;*/
 };
 

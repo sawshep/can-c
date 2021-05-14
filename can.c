@@ -1,63 +1,55 @@
+/* can: move files to the trashcan.
+ * Copyright (C) 2021  Sawyer Shepherd
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */ 
+
 #include <stdlib.h>
 #include <stdio.h>
-#include <errno.h>
-#include <sys/stat.h>
 #include <libgen.h>
-#include <string.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
-#include "env.h"
+#include "arg.h"
+#incldue "env.h"
+#include "trash.h"
 
 int find_id(char *filename, int id) {
     return find_id(filename, id + 1);
 }
 
-void trash(char *path) {
-    char *filename = NULL;
-    /* Maybe make this the size instead
-     * of the length, and remove the +1
-     * in the malloc() call?
-     */
-    size_t new_path_len;
-    char *new_path = NULL;
-    int err;
-
-    /* Create info file here. It *must*
-     * be atomic!
-     *
-     * Paths in the info file must be
-     * written in URI notation.
-     */
-    
-    filename = basename(path);
-    new_path_len = strlen(g_trash_files) + strlen(filename);
-    new_path = malloc(new_path_len + 1); /* +1 for null termination */
-
-    strcat(new_path, g_trash_files);
-    strcat(new_path, filename);
-
-    printf("%s\n", new_path);
-    err = rename(path, new_path);
-    free(new_path);
-    if (err != 0) {
-        fprintf(stderr, "Error trashing '%s': %s\n", path, strerror(errno));
-    }
-}
-
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        fprintf(stderr, "Invalid number of arguments\n");
-        exit(EXIT_FAILURE);
+    struct ArgInfo *arg_info;
+    struct TrashInfo *trash_info;
+
+    arg_info = parse_args(argc, argv);
+    if (arg_info == NULL) {
+      exit(EXIT_FAILURE);
     }
 
-    init_trash();
-
-    for (int i = 1; i < argc; i++) {
-        trash(argv[i]);
+    trash_info = init_trash();
+    if (trash_info == NULL) {
+      exit(EXIT_FAILURE);
     }
 
-    free(g_trash_files);
-    free(g_trash_info);
+    {
+        int i;
+	for (i = 0; i < sizeof()/sizeof(arg_info.files[0]), i++) {
+	    trash(arg_info.files[i], trash_info);
+	}
+    }
 
+    free(trash_info);
     exit(EXIT_SUCCESS);
 }

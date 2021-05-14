@@ -13,21 +13,30 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */ 
+ */
 
-#ifndef CAN_ENV_H
-#define CAN_ENV_H
+#include "arg.h"
 
-#define XDG_DATA_HOME_DEFAULT "~/.local/share"
+struct ArgInfo *parse_args(int argc, char *argv[]) {
+    int c;
+    enum Mode mode;
+    struct ArgInfo arg_info;
 
-#define TRASH_FILES "/Trash/files/"
-#define TRASH_INFO "/Trash/info/"
-
-struct TrashPaths {
-  char *files;
-  char *info;
+    while ((c = getopt(argc, argv, "fuv")) != -1) {
+      switch (c) {
+      case 'f':
+	mode = INFO_MODE;
+	break;
+      case 'u':
+	mode = UNTRASH_MODE;
+	break;
+      case '?':
+	return NULL;
+      default:
+	mode = INFO_MODE;
+      }
+    }
+      arg_info.mode = mode;
+    
+    return *arg_info;
 }
-
-extern void init_trash(TrashPaths*);
-
-#endif

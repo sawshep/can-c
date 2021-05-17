@@ -17,38 +17,37 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
+#include <stddef.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+#include "trash.h"
 #include "env.h"
 
-char *find_trash_info_name(char *filename){
-    int err;
-    /* Creates the trash info file atomically, reserving the name. */
-    err = open(path, O_CREAT|O_EXCL);
-    if (!err) {
-      return find_trash_name(filename);
-    }
-}
-
 /* Find a way to make this more compact */
-char *find_trash_name(char *filename){
-    int count = 0;
+char *reserve_trash_name(char *filename){
+    int count;
     char *trash_info_name = NULL;
-    bool duplicate = false;
+    int duplicate = 0;
     int err;
 
     trash_info_name = filename;
-    /* If the info file does not already exist and is not busy, create the file atomically. */
-    while (err = open(trash_info_name, O_CREAT|O_EXCL); !err && errno == EEXIST) {
+    /* If the info file does not already exist and is not busy, create the file
+    atomically. */
+    for (count = 1, err = open(trash_info_name, O_CREAT|O_EXCL); !err && errno == EEXIST; count++) {
         int trash_info_name_len;
         count++;
         if (!duplicate) {
-	    duplicate = true;
-	    trash_info_name_len = strlen(trash_info_name) + strlen('.');
+	    duplicate = 1;
+	    /* TRASH_DUPLICATE_SEPARATOR is a period, and should probably stay
+	    that way, but you can change it if you want. */
+	    trash_info_name_len = strlen(trash_info_name) + strlen(TRASH_DUPLICATE_SEPARATOR);
 	    /* +1 for null termination */
 	    realloc(trash_info_name, trash_info_name_len + 1);
-	    strcat(trash_info_name, '.');
+	    strcat(trash_info_name, TRASH_DUPLICATE_SEPARATOR);
         } else {
-	    trash_info_name_len = strlen(trash_info_name) + strlen(count);
+	    trash_info_name_len = strlen(trash_info_name) + strlen((char) count);
 	    /* +1 for null termination */
 	    realloc(trash_info_name, trash_info_name_len + 1);
 	    strcat(trash_info_name, count);
@@ -72,10 +71,7 @@ void trash(char *path, struct TrashPaths *trash_paths) {
     char *new_path = NULL;
     int err;
 
-    /* Create info file here. It *must*
-     * be atomic!
-     *
-     * Paths in the info file must be
+    /* Paths in the info file must be
      * written in URI notation.
      */
     

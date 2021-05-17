@@ -17,7 +17,7 @@
 
 #ifndef TRASH_H
 #define TRASH_H
-
-#define TRASH_DUPLICATE_SEPARATOR '.'
+#include "env.h"
+#define TRASH_DUPLICATE_SEPARATOR "."
 void trash(char *path, struct TrashPaths *trash_paths);
 #endif

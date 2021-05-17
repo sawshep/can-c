@@ -25,6 +25,12 @@
 #include "trash.h"
 #include "env.h"
 
+size_t intlen(int n) {
+    size_t digits;
+    for (digits = 0; n / 10 > 0; digits++, n /= 10);
+    return digits;
+}
+
 /* Find a way to make this more compact */
 char *reserve_trash_name(char *filename){
     int count;
@@ -47,10 +53,14 @@ char *reserve_trash_name(char *filename){
 	    realloc(trash_info_name, trash_info_name_len + 1);
 	    strcat(trash_info_name, TRASH_DUPLICATE_SEPARATOR);
         } else {
-	    trash_info_name_len = strlen(trash_info_name) + strlen((char) count);
+	    char *count_string = NULL;
+	    /* TODO: Find the strlen of an integer that changes */
+	    /* Use sprintf */
+	    
+	    trash_info_name_len = strlen(trash_info_name) + dyn_strlen();
 	    /* +1 for null termination */
 	    realloc(trash_info_name, trash_info_name_len + 1);
-	    strcat(trash_info_name, count);
+	    strcat(trash_info_name, ((char*) count));
 	}
 
     }

@@ -1,5 +1,5 @@
-CC = clang
-CFLAGS = -ansi -pedantic
+CC = cc
+CFLAGS = -pipe -ansi -pedantic
 DEPS = arg.h env.h trash.h
 OBJ = arg.c can.c env.c trash.c
 

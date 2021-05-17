@@ -12,5 +12,5 @@ can: $(OBJ)
 
 .PHONY: clean
 
-clean:
-	rm $(TARGET)
+#clean:
+#	rm $(TARGET)

@@ -50,16 +50,17 @@ char *reserve_trash_name(char *filename){
 	    that way, but you can change it if you want. */
 	    trash_info_name_len = strlen(trash_info_name) + strlen(TRASH_DUPLICATE_SEPARATOR);
 	    /* +1 for null termination */
-	    realloc(trash_info_name, trash_info_name_len + 1);
+	    trash_info_name = realloc(trash_info_name, trash_info_name_len + 1);
 	    strcat(trash_info_name, TRASH_DUPLICATE_SEPARATOR);
         } else {
 	    char *count_string = NULL;
 	    /* TODO: Find the strlen of an integer that changes */
-	    /* Use sprintf */
-	    
-	    trash_info_name_len = strlen(trash_info_name) + dyn_strlen();
 	    /* +1 for null termination */
-	    realloc(trash_info_name, trash_info_name_len + 1);
+	    count_string = malloc(intlen(count) + 1);
+	    sprintf(count_string
+	    trash_info_name_len = strlen(trash_info_name) + ;
+	    /* +1 for null termination */
+	    trash_info_name = realloc(trash_info_name, trash_info_name_len + 1);
 	    strcat(trash_info_name, ((char*) count));
 	}
 

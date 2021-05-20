@@ -25,9 +25,17 @@
 #include "trash.h"
 #include "env.h"
 
-size_t intlen(int n) {
-    size_t digits;
-    for (digits = 0; n / 10 > 0; digits++, n /= 10);
+int intlen(int n) {
+    int digits;
+    if (n == 0) {
+	    return 1;
+    }
+
+    while (n != 0) {
+        digits++;
+        n /= 10;
+    }
+
     return digits;
 }
 
@@ -57,11 +65,11 @@ char *reserve_trash_name(char *filename){
 	    /* TODO: Find the strlen of an integer that changes */
 	    /* +1 for null termination */
 	    count_string = malloc(intlen(count) + 1);
-	    sprintf(count_string
-	    trash_info_name_len = strlen(trash_info_name) + ;
+	    sprintf(count_string, "%d", count);
+	    trash_info_name_len = strlen(trash_info_name) + intlen(count);
 	    /* +1 for null termination */
 	    trash_info_name = realloc(trash_info_name, trash_info_name_len + 1);
-	    strcat(trash_info_name, ((char*) count));
+	    strcat(trash_info_name, count_string);
 	}
 
     }

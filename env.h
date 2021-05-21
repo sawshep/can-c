@@ -18,7 +18,8 @@
 #ifndef CAN_ENV_H
 #define CAN_ENV_H
 
-#define XDG_DATA_HOME_DEFAULT "~/.local/share"
+/* Must follow absolute home directory! */
+#define XDG_DATA_HOME_DEFAULT "/.local/share"
 
 #define TRASH_FILES "/Trash/files/"
 #define TRASH_INFO "/Trash/info/"

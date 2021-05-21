@@ -15,8 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */ 
 
-#ifndef TRASH_H
-#define TRASH_H
+#ifndef CAN_TRASH_H
+#define CAN_TRASH_H
 #include "env.h"
 #define TRASH_DUPLICATE_SEPARATOR "."
 void trash(char *path, struct TrashPaths *trash_paths);

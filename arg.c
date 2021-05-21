@@ -27,15 +27,15 @@ struct ArgInfo *parse_args(int argc, char *argv[]) {
     while ((c = getopt(argc, argv, "fuv")) != -1) {
       switch (c) {
       case 'f':
-	    mode = INFO_MODE;
+	mode = INFO_MODE;
 	break;
       case 'u':
-	    mode = UNTRASH_MODE;
+	mode = UNTRASH_MODE;
 	break;
       case '?':
 	return NULL;
       default:
-	    mode = INFO_MODE;
+	mode = TRASH_MODE;
       }
     }
       arg_info->mode = mode;

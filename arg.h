@@ -16,9 +16,8 @@
  */ 
 
 #ifndef CAN_ARG_H
+#define CAN_ARG_H
 enum Mode { TRASH_MODE, INFO_MODE, UNTRASH_MODE };
-
-enum Mode DEFAULT_MODE = TRASH_MODE;
 
 struct ArgInfo {
     enum Mode mode;
@@ -27,5 +26,4 @@ struct ArgInfo {
 };
 
 struct ArgInfo *parse_args(int argc, char *argv[]);
-#define CAN_ARG_H
 #endif

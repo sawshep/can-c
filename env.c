@@ -49,7 +49,13 @@ struct TrashPaths *init_trash(void) {
 
     xdg_data_home = getenv("XDG_DATA_HOME");
     if (xdg_data_home == NULL) {
-        xdg_data_home = XDG_DATA_HOME_DEFAULT;
+        size_t xdg_data_home_len;
+        char *home_dir = getenv("HOME");
+
+        xdg_data_home_len = strlen(home_dir) + strlen(XDG_DATA_HOME_DEFAULT);
+        /* +1 for null termination */
+        xdg_data_home = malloc(xdg_data_home_len + 1);
+        strcat(xdg_data_home, XDG_DATA_HOME_DEFAULT);
     }
 
     /* +1 for null termination */
@@ -82,7 +88,7 @@ struct TrashPaths *init_trash(void) {
      * The code below does not adhere to
      * the standard.
      */
-    if (mkdir(trash_files, 0600) || mkdir(trash_info, 0600)) {
+    if (mkpath(trash_files, 0770) || mkpath(trash_info, 0770)) {
         fprintf(stderr, "Could not create trash folders: %s\n", strerror(errno));
 	free(trash_files);
 	free(trash_info);
